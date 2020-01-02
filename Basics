@@ -24,3 +24,31 @@ create controller & model
 	DB_DATABASE=employeeApp
 	DB_USERNAME=root
 	DB_PASSWORD=root123
+	
+Laravel eloquent
+............................
+Retrieving Results
+  1. Retrieving All Rows From A Table
+     $flights = App\Flight::all();
+     
+  2. Retrieve the first model matching the query constraints...
+     $flights = App\Flight::first();
+     
+     first() returns the first record found in the database. If no matching model exist, it returns null.
+     firstOrFail() returns the first record found in the database. If no matching model exist, it throws an error1.
+     
+  3. Retrieve a model by its primary key...
+     $flight = App\Flight::find(1); 
+     $flights = App\Flight::find([1, 2, 3]);     // here 1,2,3 are the primary keys
+     
+     find($id) takes an id and returns a single model. If no matching model exist, it returns null.
+     findOrFail($id) takes an id and returns a single model. If no matching model exist, it throws an error1.
+     
+  4. Retrieving Aggregates
+     To get total rows in a table
+     $count = App\Flight::count();
+    
+     to get max price of a table
+     $max = App\Flight::max('price');
+     
+     

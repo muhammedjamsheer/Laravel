@@ -75,6 +75,15 @@ Retrieving Results
      whereNotIn
      $data = Employee::whereNotIn('id', [1, 2, 3])->get();
      
+     whereNull
+     The whereNull method verifies that the value of the given column is NULL:
+     $data = Employee::whereNull('updated_at')->get();
+     
+     whereNotNull
+     The whereNotNull method verifies that the column's value is not NULL:
+     $data = Employee::whereNotNull('updated_at')->get();
+   
+     
      LIKE function  
      $data = Employee::where('name', 'like', 'T%')->get();   
      

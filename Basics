@@ -45,14 +45,62 @@ Retrieving Results
      findOrFail($id) takes an id and returns a single model. If no matching model exist, it throws an error1.
      
   4. Retrieving Aggregates
-     To get total rows in a table
+     To get total rows in a Employee table
      $count = Employee::count();
     
-     to get max price of a table
+     to get max age of a Employee table
      $max = Employee::max('age');
      
-  5. Retrieving based on codition
-     $data = Employee::where('id',$id)->get();
+  5. Retrieving based on codition 
   
+     where  
+     $data = Employee::where('id',1)->get();
+     $data = Employee::where('id','=',1)->get();
+     
+     And Statements
+     $data = Employee::where('age',24)->Where('name', 'John')->get();
+     
+     orWhere
+     $data = Employee::where('age',24)->orWhere('name', 'John')->get();
+     
+     whereBetween 
+     $data = Employee::whereBetween('age', [20, 30])->get();
+     
+     whereNotBetween 
+     $data = Employee::whereNotBetween('age', [20, 30])->get();
+     
+     whereIn
+     $data = Employee::whereIn('id', [1, 2, 3])->get();
+     
+     whereNotIn
+     $data = Employee::whereNotIn('id', [1, 2, 3])->get();
+     
+     LIKE function  
+     $data = Employee::where('name', 'like', 'T%')->get();   
+     
+  6. Specifying A Select Clause
+     $data=Employee::select('name', 'email as user_email')->get();
+     
+ Inserting & updating Models
+ 
+        $form_data = array(
+            'name'=>$request['name'], 
+            'email'=>$request['email'],
+            'status' =>1,
+        );
+        $create = Employee::create($form_data);	
+	$update =  Employee::where('id', $request->employee_id)->update( $form_data);
+	
+      
+ Deleting results 
+  1. To delete a model
+     $data = Employee::find(1);
+     $data->delete();
+   
+  2. if you know the primary key of the model, you may delete the model without retrieving it by calling the destroy method.
+     Employee::destroy(1);
+     Employee::destroy(1, 2, 3);
+     
+
      
      

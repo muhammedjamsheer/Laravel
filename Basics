@@ -112,6 +112,10 @@ Retrieving Results
      Employee::destroy(1);
      Employee::destroy(1, 2, 3);
      
+     
+ Eloquent: Relationships
+ --------------------------------
+     
 
      
      

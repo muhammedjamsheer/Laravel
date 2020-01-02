@@ -82,7 +82,9 @@ Retrieving Results
      whereNotNull
      The whereNotNull method verifies that the column's value is not NULL:
      $data = Employee::whereNotNull('updated_at')->get();
-   
+    
+     orderBy
+     $data = Employee::orderBy('name', 'desc')->get();
      
      LIKE function  
      $data = Employee::where('name', 'like', 'T%')->get();   

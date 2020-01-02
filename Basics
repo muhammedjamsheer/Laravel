@@ -1,1 +1,26 @@
-test
+laravel installation
+..........................
+	composer create-project laravel/laravel project_name --prefer-dist
+	change env.example to .env
+	cd project_name
+	php artisan serve
+	php artisan key:generate
+
+create table
+.........................
+	php artisan make:migration create_users_table
+	php artisan migrate
+
+create controller & model
+..........................
+	php artisan make:controller userController 
+	php artisan make:model User
+  
+ env file
+.........................
+	DB_CONNECTION=mysql
+	DB_HOST=127.0.0.1
+	DB_PORT=3306
+	DB_DATABASE=employeeApp
+	DB_USERNAME=root
+	DB_PASSWORD=root123

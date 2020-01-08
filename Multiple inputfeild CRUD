@@ -1,0 +1,309 @@
+@include('welcome')
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <form id="studentForm">
+                <div class="form-group" id="name_group">
+                    <label>Name:</label>
+                    <input type="text" name="name" id="name" class="form-control">
+                </div>
+                <div class="form-group" id="email_group">
+                    <label>Email:</label>
+                    <input type="text" name="email" id="email" class="form-control">
+                </div>
+                <div id="marks_table"> </div>
+                <button type="submit" class="btn btn-default">Save</button>
+            </form>
+        </div>
+        <div class="col-lg-8">
+            <table id="studentTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                    <th>No</th>
+                    <th> Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- The Modal for view student details -->
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4">Name :</div>
+                <div class="col-lg-8" id="student_name"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">Email :</div>
+                <div class="col-lg-8" id="student_email"></div>
+            </div>
+                <table id="viewTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th> Subject</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var count = 1;
+    
+    dynamic_field(count);
+    function dynamic_field(number)
+    {
+        html = '<tr class="row">';
+        html += '<td class="col-lg-5 form-group"><input placeholder="subject" type="text" name="subject[]" class="form-control" /></td>';
+        html += '<td class="col-lg-5 form-group"><input  placeholder="mark" type="text" name="mark[]" class="form-control" /></td>';
+        if(number > 1)
+        {
+            html += '<td class="col-lg-2 form-group"><button type="button" name="remove" id="" class="btn btn-danger btn-sm remove">Remove</button></td></tr>';
+            $('#marks_table').append(html);
+        }
+        else
+        {   
+            html += '<td class="col-lg-2 form-group"><button type="button" name="add" id="add" class="btn btn-success btn-sm">Add</button></td></tr>';
+            $('#marks_table').html(html);
+        }
+    }  
+
+    $(document).on('click', '#add', function(){
+        count++;
+        dynamic_field(count);
+    });
+
+    $(document).on('click', '.remove', function(){
+        count--;
+        $(this).closest("tr").remove();
+    });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    //INSERT DATA
+        $('#studentForm').on('submit', function(event){
+        event.preventDefault();
+        $.ajax({
+            url:'save_student',
+            method:'post',
+            data:$(this).serialize(),
+            dataType:'json',
+            success:function(data)
+            {
+                if(data.status=200){
+                    fetchRecords();
+                    toastr.success(data.message, 'Success Alert', {timeOut: 2000});
+                    $("#studentForm")[0].reset();
+                    
+                }
+            }
+        })
+    });
+
+
+    //get inserted record to display in table
+    fetchRecords();
+     function fetchRecords(){
+       $.ajax({
+         url: 'getall_students',
+         type: 'get',
+         dataType: 'json',
+         success: function(data){
+
+         $('#studentTable tbody').empty(); 
+            var len = 0;
+            if(data != null){
+                len = data.length;
+            }
+                if(len>0){
+                    $.each(data, function (key, val) {
+             
+                   var slno=key+1
+
+                        $('#studentTable tbody').append("<tr>"+
+                            "<td>"+slno+"</td>"+
+                            "<td >"+val.name+"</td>"+
+                            "<td >"+val.email+"</td>"+
+                            "<td>"+
+                                "<button class='btn btn-warning1 btn-sm' id='view' data-id="+val.id+">View</button>"+
+                                "<button class='btn btn-danger1 btn-sm' id='delete' data-id="+val.id+">Delete</button>"
+                            +"</td>"+
+                        +"</tr>")
+                    });
+                  }else{
+                     $('#studentTable tbody').append("<tr>" +
+                       "<td align='center' colspan='5'>No record found.</td>"
+                      + "</tr>")
+                   }
+             }
+         });
+       }
+       
+ //delete data in tables
+
+       $("body").on("click","#delete",function(){
+            var id = $(this).attr("data-id");
+            var el = this;
+            bootbox.confirm("Do you really want to delete customer?", function(result) {
+                if(result){
+                    $.ajax({
+                        type:'get',
+                        url:'delete_student/'+id,
+                            success:function(data){
+                            if(data.status==200){
+                            toastr.success('deleted succesfully', 'Success Alert', {timeOut: 2000});
+                            fetchRecords(); 
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+// view customer IN  modal window
+
+       $("body").on("click","#view",function(){
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type:'get',
+                url:'view_student/'+id,
+                    success:function(data){
+                        $('#viewTable tbody').empty();
+                        console.log(data);
+                        $("#myModal").modal();
+                        $("#student_name").html(data.name);
+                        $("#student_email").html(data.email)
+
+                        $.each(data['subject'], function (key, val) {
+                            $('#viewTable tbody').append("<tr>"+
+                     
+                            "<td >"+val.subject+"</td>"+
+                            "<td >"+val.marks+"</td>"+
+                            
+                            +"</tr>")
+                        });
+                }
+            });  
+        });
+
+   </script>
+   
+ __________________________________________________________________________________________________________________
+   
+Route::get('student', 'studentController@student');
+Route::post('save_student', 'studentController@save_student');
+Route::get('getall_students', 'studentController@getall_students');
+Route::get('delete_student/{id}', 'studentController@delete_student');
+Route::get('view_student/{id}', 'studentController@view_student');
+__________________________________________________________________________________________________________________
+CONTROLLER
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Student;
+use App\Marks;
+class studentController extends Controller
+{
+    public function student()
+    {
+        return view('student');
+    }
+    public function save_student(Request $request)
+    {
+
+        $form_data = array(
+            'name'=>$request['name'],
+            'email'=>$request['email'], 
+            'status'=>1
+        );
+        $student = Student::create($form_data);
+
+        if($student){
+            $subject = $request->subject;
+            $mark = $request->mark;
+            for($count = 0; $count < count($subject); $count++)
+            {
+                $data = array(
+                    'subject' => $subject[$count],
+                    'marks'  => $mark[$count],
+                    'student_id'  => $student['id']
+                );
+                $create = Marks::create($data);
+            }
+        }
+
+      if($create){
+          $status = 200; 
+          $message = 'Customer created succesfully';
+          $message_type = "success";
+          return response()->json(compact('status', 'message', 'message_type'), 200);
+      }
+   
+    }
+    public function getall_students()
+    {
+        $data =  Student::get();
+        return response()->json( $data,200);
+    }
+    public function delete_student($id){
+        $student=Student::where('id',$id)->first();
+         $student->delete();
+         $marks = Marks::where('student_id',$id)->get();
+         foreach (  $marks as $mark) {
+            $mark->delete();
+         }
+        
+        if( $student){
+            $results['status'] = 200;
+            $results['message_type'] = 'success';
+            $results['message'] = 'Students deleted succesfully';
+        }
+        return response()->json( $results);
+    }
+    public function view_student($id){
+        $student=Student::where('id',$id)->with('subject')->first();
+
+        return response()->json( $student);
+    }
+}
+_____________________________________________________________________________________________________________
+MODEL
+
+class Student extends Model
+{
+    protected $table = 'students';
+    protected $fillable = [
+        'name', 'email','status'
+    ];
+    public function subject(){
+        return $this->hasmany('App\Marks','student_id','id');
+    }
+}
+
+
+
+

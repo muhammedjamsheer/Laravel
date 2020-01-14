@@ -18,3 +18,116 @@
   -----------------------------------------------------------------------------------------------------------------------
   5.Laravel Create First Ajax CRUD Application
   https://www.tutsmake.com/laravel-5-7-create-first-ajax-crud-application/
+  
+  
+  
+var user_flag =0,email_flag =0, email_msg="", user_msg="";
+
+function  check_email(email)
+{
+    
+    if(email!="")
+    {
+        $(".email_msg").remove();
+        $.post("<?php echo site_url('Resource/check_email')?>",{email:email,<?php echo $this->security->get_csrf_token_name();?> : "<?php echo $this->security->get_csrf_hash()?>"},function(data){
+           
+            if(data>0)
+            {
+               
+                email_flag =1;
+                $("#email_group").append("<span class='email_msg'>Email already exists</span>");
+            }else
+            {
+                email_msg=""
+                email_flag =0;
+                $(".email_msg").remove();
+            }
+        })
+    }
+}
+
+
+
+function validate(){
+        
+   
+    $(".email_msg").remove();
+    $(".user_msg").remove();
+    var date= $("#name").val(); 
+    var flat_name= $("#fname").val(); 
+    var own_name= $("#lname").val(); 
+    var district =$("#district_id").val();
+    var add =$("#address").val();
+    var facility =$("#facility").val();
+    var date =$("#work_date").val();
+    
+        $(".error_msg").remove(); 
+        var flag=0;
+        if(date == "")
+        {
+           
+            flag =1;
+            $("#from_date_group").append("<span class='error_msg'>Date Required</span>");
+        }
+       
+        if(flat_name == "")
+        {
+            flag =1;
+            $("#firstname_group").append("<span class='error_msg'>Flat Name required</span>");
+        }
+       if(own_name == "")
+        {
+            flag =1;
+            $("#lastname_group").append("<span class='error_msg'>Owned By required</span>");
+        }
+         if(district == "")
+        {
+            flag =1;
+            $("#district_group").append("<span class='error_msg'>District required</span>");
+        }
+      
+        if(add == "")
+        {
+            flag =1;
+            $("#add_group").append("<span class='error_msg'>Address required</span>");
+        }
+       
+        if(facility == "")
+         {
+             flag =1;
+             $("#fact_group").append("<span class='error_msg'>Please select Facilities</span>");
+         }
+        
+        if(flag ==0 && email_flag ==0 && user_flag ==0)
+        {
+            $("#register").prop("disabled",true);
+            $.post("<?php echo site_url('Resource/flat_save')?>",{date:date,flat_name:flat_name,own_name:own_name,district:district,add:add,facility:facility,blocks:blocks,<?php echo $this->security->get_csrf_token_name();?> : "<?php echo $this->security->get_csrf_hash()?>"},function(data){
+            $('#register').removeAttr("disabled");
+                   if(data == 101)
+                            {
+
+                            swal({ title: "Innovative HS Added Succesfully!",
+                             type: "success",
+                              icon: "success"
+                         }).then(okay => {
+                               if (okay) {
+                                 window.location.href="<?php echo site_url('resource')?>";
+                              }
+                            });
+
+                           }
+                           if(data == 104)
+                           {
+                             swal({
+                          title: "Oops..!",
+                          text: "Something is Wrong..!",
+                          icon: "error",
+                           });
+                        }
+            })
+        }
+}
+
+
+ $('#mecData tbody').on( 'click', '#Img_Act', function () {
+  

@@ -333,7 +333,7 @@ class employeeController extends Controller
             $message = 'Employee deleted succesfully';
             $message_type = "success";
         } 
-        return response()->json( $data,200);
+       return response()->json(compact( 'status', 'message', 'message_type'), 200); 
     }
     ------------get a specific employee--------------
     public function edit_employee($id)

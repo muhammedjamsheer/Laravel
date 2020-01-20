@@ -25,6 +25,15 @@ create controller & model
 	DB_USERNAME=root
 	DB_PASSWORD=root123
 	
+	
+Get url
+.................................
+    var url = $(location).attr('href'),
+    parts = url.split("/");
+    last_part = parts[parts.length-2];
+    mark_id = parts[parts.length-1];
+    
+    
 Laravel eloquent
 ............................
 Retrieving Results

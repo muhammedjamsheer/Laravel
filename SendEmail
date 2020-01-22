@@ -1,2 +1,12 @@
-change email settings
+1.change email settings
 manage your google account/security/Less secure app access->turn on
+
+
+2.change in laravel .env file into
+
+  MAIL_DRIVER=smtp
+  MAIL_HOST=smtp.gmail.com
+  MAIL_PORT=465
+  MAIL_USERNAME=***
+  MAIL_PASSWORD=***
+  MAIL_ENCRYPTION=ssl

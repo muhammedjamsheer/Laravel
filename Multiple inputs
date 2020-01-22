@@ -19,31 +19,367 @@
   ----------------------------------------------------------------
  
 
-
-
-
-
-
-marks.blade.php
-----------------
-<form id="markForm" name="departmentForm" class="form-horizontal">
-  <div class="form-group">
-    <table class="table table-bordered" id="dynamicTable">  
-      <tr>
-        <th>Subject</th>
-        <th>Marks</th>
-        <th>Action</th>
-      </tr>
-      <tr>  
-        <td> <select id="subject_name_0"  name="addmarks[0][subject_name]" class="form-control" > </select></td>  
-        <td><input type="text" name="addmarks[0][subject_mark]" placeholder="Marks" class="form-control" /></td>  
-        <td><button type="button" name="add" id="add" class="btn btn-success1">Add</button></td>  
-      </tr>  
-    </table> 
+student.balde.php
+-----------------
+@include('welcome')
+<div class="container">
+    <div class="col-lg-8">
+        <button class='btn btn-info btn-sm float-right' id='create_student' >ADD</button>
+        <table id="studentTable" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th> Name</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
-  </div>
-  <div class="form-group">
-    <input type="hidden" name="department_id" id="department_id"> 
-    <button type="submit" class="btn btn-primary" id="btn-save" >Save changes</button>
-  </div>
-</form>
+</div>
+
+ <!-- modal for adding student details -->
+
+<div class="modal fade" id="create_student_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="studentForm">
+                    <div class="form-group" id="name_group">
+                        <label>Name:</label>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="form-group" id="email_group">
+                        <label>Email:</label>
+                        <input type="text" name="email" id="email" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="text" id="counter" >
+                    </div>
+                   <table id="marks_add_Table" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th><button type="button" name="add" id="add" class="btn btn-info btn-sm ">Add</button></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- The Modal for view student details -->
+
+<div class="modal fade" id="view_student_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4">Name :</div>
+                <div class="col-lg-8" id="student_name"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">Email :</div>
+                <div class="col-lg-8" id="student_email"></div>
+            </div>
+                <table id="viewTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th> Subject</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var count ;
+     $(document).on('click', '#create_student', function(){
+        $("#create_student_modal").modal();
+        $("#studentForm")[0].reset();
+        $('#counter').val(0);
+    });
+    $(document).on('click', '#add', function(){
+         var counter = parseInt($('#counter').val());
+         dynamic_field(counter);
+    });
+ 
+    function dynamic_field(counter)
+    {
+        html = '<tr>';
+        html += '<td><input  placeholder="subject" type="text" name="addmarks['+counter+'][subject]" id="subject_'+counter+'" class="form-control" /></td>';
+        html += '<td><input  placeholder="mark" type="text" name="addmarks['+counter+'][marks]" id="marks_'+counter+'" class="form-control" /></td>';
+        html += '<td><button type="button" name="remove" id="remove" class="btn btn-danger btn-sm ">Del</button></td></tr>';
+        $('#marks_add_Table tbody').append(html);
+        $('#counter').val( counter + 1 );
+    }  
+
+    $(document).on('click', '#remove', function(){
+        $(this).closest("tr").remove();
+    });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#studentForm').on('submit', function(event){
+        event.preventDefault();
+        $.ajax({
+            url:'save_student',
+            method:'post',
+            data:$('#studentForm').serialize(),
+            dataType:'json',
+            success:function(data)
+            {
+                if(data.status=200){
+                    fetchRecords();
+                    toastr.success(data.message, 'Success Alert', {timeOut: 2000});
+                    $("#studentForm")[0].reset();
+                    $('#create_student_modal').modal('hide');
+                    
+                }
+            }
+        })
+    });
+
+    //get inserted record to display in table
+    fetchRecords();
+     function fetchRecords(){
+       $.ajax({
+         url: 'getall_students',
+         type: 'get',
+         dataType: 'json',
+         success: function(data){
+
+         $('#studentTable tbody').empty(); 
+            var len = 0;
+            if(data != null){
+                len = data.length;
+            }
+                if(len>0){
+                    $.each(data, function (key, val) {
+                    var slno=key+1
+                        $('#studentTable tbody').append("<tr>"+
+                            "<td>"+slno+"</td>"+
+                            "<td >"+val.name+"</td>"+
+                            "<td >"+val.email+"</td>"+
+                            "<td>"+
+                                "<button class='btn btn-warning btn-sm' id='view' data-id="+val.id+">View</button>&nbsp;"+
+                                "<button class='btn btn-info btn-sm' id='edit' data-id="+val.id+">Edit</button>&nbsp;"+
+                                "<button class='btn btn-danger btn-sm' id='delete' data-id="+val.id+">Delete</button>&nbsp;"
+                            +"</td>"+
+                        +"</tr>")
+                    });
+                  }else{
+                     $('#studentTable tbody').append("<tr>" +
+                       "<td align='center' colspan='5'>No record found.</td>"
+                      + "</tr>")
+                   }
+             }
+         });
+       }
+     //delete data in tables
+       $("body").on("click","#delete",function(){
+            var id = $(this).attr("data-id");
+            var el = this;
+            bootbox.confirm("Do you really want to delete customer?", function(result) {
+                if(result){
+                    $.ajax({
+                        type:'get',
+                        url:'delete_student/'+id,
+                            success:function(data){
+                            if(data.status==200){
+                            toastr.success('deleted succesfully', 'Success Alert', {timeOut: 2000});
+                            fetchRecords(); 
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        // view customer IN  modal window
+       $("body").on("click","#view",function(){
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type:'get',
+                url:'view_student/'+id,
+                    success:function(data){
+                        $('#view_student_modal').modal('show');
+                        $("#student_name").html(data.name);
+                        $("#student_email").html(data.email)
+                        $('#viewTable tbody').empty();
+                        $.each(data['subject'], function (key, val) {
+                            $('#viewTable tbody').append("<tr>"+
+                            "<td >"+val.subject+"</td>"+
+                            "<td >"+val.marks+"</td>"+
+                            
+                            +"</tr>")
+                        });
+                }
+            });  
+        });
+
+        //edit student details
+        $("body").on("click","#edit",function(){
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type:'get',
+                url:'edit_student/'+id,
+                    success:function(data){
+                      $("#create_student_modal").modal('show');
+                      $('#name').val(data.name);
+                      $('#email').val(data.email);
+                      $('#counter').val(data['subject'].length);
+                      var count_length=data['subject'].length;
+                      $('#marks_add_Table tbody').empty();
+                      $.each(data['subject'], function (key, val) {
+                        var keys=key+1
+                        dynamic_field(keys);
+                         $('#subject_'+keys).val(val.subject);
+                         $('#marks_'+keys).val(val.marks);
+                        });
+                    }
+           });
+    });
+   </script>
+   
+  __________________________________________________________________________________________________________________________
+ routes/web.php
+
+Route::get('student', 'studentController@student');
+Route::post('save_student', 'studentController@save_student');
+Route::get('getall_students', 'studentController@getall_students');
+Route::get('delete_student/{id}', 'studentController@delete_student');
+Route::get('view_student/{id}', 'studentController@view_student');
+Route::get('edit_student/{id}', 'studentController@edit_student');
+_____________________________________________________________________________________________________________________________
+CONTROLLER
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Student;
+use App\Marks;
+class studentController extends Controller
+{
+    public function student()
+    {
+        return view('student');
+    }
+    public function save_student(Request $request)
+    {
+        $form_data = array(
+            'name'=>$request['name'],
+            'email'=>$request['email'], 
+            'status'=>1
+        );
+        if($request->student_id){
+            $update =  Student::where('id', $request->student_id)->update( $form_data);
+            if($update){
+                $status = 200; 
+                $message = 'Student updated succesfully';
+                $message_type = "success";
+                return response()->json(compact('status', 'message', 'message_type'), 200);
+              }
+        }
+        else{
+            $student = Student::create($form_data);
+            if($student){
+                foreach ($request->addmarks as  $value) {
+                    $data = array(
+                        'student_id'=> $student['id'], 
+                        'subject'=>$value['subject'],
+                        'marks'=>$value['marks']
+                    );
+                    $mark = Marks::create($data);
+                }
+            }
+          if($mark ){
+              $status = 200; 
+              $message = 'Marks added succesfully';
+              $message_type = "success";
+              return response()->json(compact('status', 'message', 'message_type'), 200);
+          }
+        }
+    }
+    public function getall_students()
+    {
+        $data =  Student::get();
+        return response()->json( $data,200);
+    }
+    public function delete_student($id){
+        $student=Student::where('id',$id)->first();
+         $student->delete();
+         $marks = Marks::where('student_id',$id)->get();
+         foreach (  $marks as $mark) {
+            $mark->delete();
+         }
+        
+        if( $student){
+            $results['status'] = 200;
+            $results['message_type'] = 'success';
+            $results['message'] = 'Students deleted succesfully';
+        }
+        return response()->json( $results);
+    }
+    public function view_student($id){
+        $student=Student::where('id',$id)->with('subject')->first();
+        return response()->json( $student);
+    }
+    public function edit_student($id){
+        $student=Student::where('id',$id)->with('subject')->first();
+        return response()->json( $student);
+    }
+}
+
+_________________________________________________________________________________________________________________________
+MODEL
+  1.STUDENT MODEL
+  ----------------
+  class Student extends Model
+  {
+      protected $table = 'students';
+      protected $fillable = [
+          'name', 'email','status'
+      ];
+      public function subject(){
+          return $this->hasmany('App\Marks','student_id','id');
+      }
+  }
+  
+  2.MARKS MODEL
+  ------------
+  class Marks extends Model
+{
+    protected $table = 'marks';
+    protected $fillable = [
+        'subject', 'marks','student_id'
+    ];
+}
+
+
+
+
+

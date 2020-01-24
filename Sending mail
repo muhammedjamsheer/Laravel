@@ -1,0 +1,51 @@
+Step 1 − congigure .env file
+
+//using gmail
+MAIL_DRIVER = smtp
+MAIL_HOST = smtp.gmail.com
+MAIL_PORT = 587
+MAIL_USERNAME = your-gmail-username
+MAIL_PASSWORD = your-application-specific-password
+MAIL_ENCRYPTION = ssl
+
+//using mailtrap
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=720f28ccd35a75
+MAIL_PASSWORD=988ddc885297b8
+MAIL_ENCRYPTION=null
+
+
+    public function send_mail($id)
+    {
+        $email_body='Hii.. <h6> Muhammed jamsheer </h6>;
+        $mail_data = array(
+            "to_email_id" => 'muhammedjamsheer007@gmail.com',
+            "mail_subject" => 'first semester results',
+            "mail_body_content" => $email_body,
+        );
+        $mail= Mail::send([], [], function ($message) use ($mail_data) {
+            $message->from('muhammedjamsheer.rvt@gmail.com', 'RVLaTeX');
+            $message->to($mail_data['to_email_id']);
+            $message->subject($mail_data['mail_subject']);
+            $message->setBody($mail_data['mail_body_content'], 'text/html');
+            $message->from('muhammedjamsheer.rvt@gmail.com','book my show...');
+        });
+
+         if (count(Mail::failures()) > 0) {
+            $status = false;
+            echo "There was one or more failures. They were: <br />";
+            foreach(Mail::failures as $email_address) {
+                echo " - $email_address <br />";
+            }
+            return 'Email send failed';
+        } else {
+            $results['status'] = 200;
+            $results['message'] =   $fourdigitrandom;
+            return response()->json($results, 200);
+        }
+    }
+    
+
+

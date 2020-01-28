@@ -22,7 +22,7 @@ Step 1_congigure .env file
 
     public function send_mail($id)
     {
-        $email_body='Hii.. <h6> Muhammed jamsheer </h6>;
+        $email_body='Hii.. <h6> Muhammed jamsheer </h6>';
         $mail_data = array(
             "to_email_id" => 'muhammedjamsheer007@gmail.com',
             "mail_subject" => 'first semester results',

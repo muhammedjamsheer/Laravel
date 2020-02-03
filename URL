@@ -32,6 +32,9 @@
  8.Sending email via mailtrap
 https://www.tutorialspoint.com/laravel/laravel_sending_email.htm
  https://www.5balloons.info/laravel-send-email-example/
+ 
+ 9.Email queing in laravel 5.5
+ https://appdividend.com/2017/12/21/laravel-queues-tutorial-example-scratch/
 ----------------------------------------------------------------------------------------------------------------------
 9.Laravel JWT Authentication Tutorial-app divident
   https://appdividend.com/2018/02/24/laravel-jwt-authentication-tutorial/

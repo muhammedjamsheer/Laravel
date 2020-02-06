@@ -1,0 +1,15 @@
+Laravel - Routing
+-----------------
+  Routing in Laravel allows to route all  application requests to its appropriate controller.
+  
+  Routing in Laravel includes the following categories −
+     Basic Routing     - Basic routing routes the request to the associated controllers.
+     Route Parameters  - it is used to send parametes with the url
+     Named Routes      - it is done by attaching the name method to the route definition.
+     
+Laravel - Middleware
+--------------------
+ middleware is a technique for filtering HTTP requests.
+ middleware that checks whether application user is authenticated or not
+
+ 

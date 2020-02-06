@@ -46,3 +46,97 @@ List benefits of using Laravel over other PHP frameworks?
   Middleware 
   Eloquent ORM 
   Routing 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  1) What is PHP?
+PHP is one of the popular server-side scripting languages for developing a web application.
+
+2)Why do we use PHP?
+it is totally free to use. So anyone can use PHP without any cost and host the site at a minimal cost.
+It supports multiple databases. The most commonly used database is MySQL which is also free to use. 
+Many PHP frameworks are used now for web development, such as CodeIgniter, CakePHP, Laravel etc.
+These frameworks make the web development task much easier than before.
+
+Q #5) What are the differences between echo and print?
+Both echo and print method print the output in the browser but there is a difference between these two methods.
+echo does not return any value after printing the output and it works faster than the print method.
+print method is slower than the echo because it returns boolean value after printing the output.
+
+Q #8) What are the uses of explode() and implode() functions?
+explode() function is used to split a string into an array 
+implode() function is used to make a string by combining the array elements.
+
+Q #10) Which function is used in PHP to check the data type of any variable?
+gettype() function is used to check the data type of any variable.
+
+Sample code:
+echo gettype(true).'';       //boolean
+echo gettype(10).'';         //integer
+echo gettype('Programming').''; //string
+echo gettype(null).''; //NULL
+
+
+Q #31) What is the difference between for and foreach loop in PHP?
+for loop is mainly used for iterating a pre-defined number of times and foreach loop is used for reading array elements or MySQL result set where the number of iteration can be unknown.
+
+
+Q #36) What type of errors can be occurred in PHP?
+Fatal Errors– The execution of the script stops when this error occurs.
+                In the following script, f1() function is declared but f2() function is called which is not declared. The execution of the script will stop when f2() function will call. So, “Testing Fatal Error” will not be printed.
+
+Parse Errors– This type of error occurs when the coder uses a wrong syntax in the script. 
+              This errors due to missing of semicolon,unclosed brases,quotes etc.
+
+Warning Errors- This type of error does not stop the execution of a script. 
+                It continues the script even after displaying the error. 
+               This errors due to afile does not exist in the current location then a warning message will display to show the error  
+Notice Errors- This type of error shows a minor error of the script and continues the execution after displaying error.     
+                This errors due to a variable, $a is defined but $b is not defined. So, a notice of undefined variable will display                      
+
+
+What are constructor and destructor in PHP?
+PHP constructor and  destructor are special type functions which are automatically called when a PHP class object is created and destroyed. The constructor is the most useful of the two because it allows you to send parameters along when creating a new object, which can then be used to initialize variables on the object.
+
+
+Q12. What is difference between include,require,include_once and require_once() ?
+
+Include :-Include is used to include files more than once in single PHP script.
+          Include generates a warning error and stops the script execution,if file is not found on specified location or path
+          Syntax:- include(“file_name.php”);
+
+Include Once:-Include once include a file only one time in php script.Second attempt to include is ignored.
+         Syntax:- include_once(“file_name.php”);
+
+Require:-Require is also used to include files more than once in single PHP script.
+         Require generates a Fatal error and halts the script execution,if file is not found on specified location or path.
+         Syntax:- require(“file_name.php”);
+
+Require Once :-Require once include a file only one time in php script.Second attempt to include is ignored. 
+         Require Once also  generates a Fatal error and halts the script execution ,if file is not found on specified location or path.
+
+
+
+
+Q50. What is difference between session and cookie in PHP ?
+Session and cookie both are used to store values or data.
+cookie stores data in your browser and a session is stored on the server.
+Session destroys that when browser close and cookie delete when set time expires.
+
+
+What’s the difference between unset() and unlink()
+unset() sets a variable to “undefined” while unlink() deletes a file we pass to it from the file system.
+
+
+What is the difference between GET and POST?
+
+GET displays the submitted data as part of the URL, during POST this information is not shown as it’s encoded in the request.
+GET can handle a maximum of 2048 characters, POST has no such restrictions.
+Normally GET is used to retrieve data while POST to insert and update.

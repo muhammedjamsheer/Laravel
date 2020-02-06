@@ -23,12 +23,26 @@ Eloquent ORM
 -----------
   The Eloquent ORM included with Laravel provides a  simple ActiveRecord implementation for working with database
   Eloquent  Relationships
-  One To One
-  One To Many
-  Many To Many
+  One To One - hasOne
+  One To Many - hasMany
+  One To Many(Inverse) - belongsTo
+  Many To Many - belongsToMany
 
 Artisan CLI
 ------------
   Artisan Command line interface  provides a number of helpful commands for your use while developing your application. 
 
- 
+Laravel Migration
+----------------
+  Laravel migration is a way that allows you to create a table in your database, without actually going to the database manager 
+  The up() method is run when the migration is executed to apply changes to the database.
+
+
+List benefits of using Laravel over other PHP frameworks?
+---------------------------------------------------------
+  Artisan - A Command-Line Interface
+  Migrations & Seeding
+  Blade Template Engine
+  Middleware 
+  Eloquent ORM 
+  Routing 

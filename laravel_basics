@@ -1,15 +1,34 @@
 Laravel - Routing
 -----------------
   Routing in Laravel allows to route all  application requests to its appropriate controller.
-  
+
   Routing in Laravel includes the following categories −
-     Basic Routing     - Basic routing routes the request to the associated controllers.
-     Route Parameters  - it is used to send parametes with the url
-     Named Routes      - it is done by attaching the name method to the route definition.
-     
+  Basic Routing     - Basic routing routes the request to the associated controllers.
+  Route Parameters  - it is used to send parametes with the url
+  Named Routes      - it is done by attaching the name method to the route definition.
+
 Laravel - Middleware
 --------------------
- middleware is a technique for filtering HTTP requests.
- middleware that checks whether application user is authenticated or not
+  middleware is a technique for filtering HTTP requests.
+  middleware that checks whether application user is authenticated or not
+
+Laravel - CSRF Protection
+------------------------
+  CSRF attacks are the unauthorized activities which the authenticated users of the system perform. 
+  Laravel provides protection with the CSRF attacks by generating a CSRF token. 
+  CSRF Token is used to verify that the requests are made by an authenticated user.
+  This CSRF token is generated automatically for each user. 
+
+Eloquent ORM
+-----------
+  The Eloquent ORM included with Laravel provides a  simple ActiveRecord implementation for working with database
+  Eloquent  Relationships
+  One To One
+  One To Many
+  Many To Many
+
+Artisan CLI
+------------
+  Artisan Command line interface  provides a number of helpful commands for your use while developing your application. 
 
  

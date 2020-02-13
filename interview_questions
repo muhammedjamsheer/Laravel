@@ -1,9 +1,27 @@
 Q1. What is Laravel?
     Laravel is a free open source "PHP framework" based on the MVC design pattern.
     
-    View is a user interface. View display data infront of the user
-    Controllers act as an interface between Model and View components
+       View is a user interface. View display data infront of the user
+       Controllers act as an interface between Model and View components
     
 Q2. What is PHP artisan ?
-    PHP artisan is the command line interface/tool included with Laravel. 
-    It provides a number of helpful commands that can help you while you build your application easily.    
+      PHP artisan is the command line interface/tool included with Laravel. 
+      It provides a number of helpful commands that can help you while you build your application easily.
+    
+Q3. What is routes in Laravel?   
+      Routing in Laravel allows to route all  application requests to its appropriate controller.
+      Routing in Laravel includes the following categories −
+      Basic Routing     - Basic routing routes the request to the associated controllers.
+      Route Parameters  - it is used to send parametes with the url
+      Named Routes      - it is done by attaching the name method to the route definition.
+
+Q4. What is middleware in Laravel? 
+      middleware is a technique for filtering HTTP requests.
+      middleware that checks whether application user is authenticated or not 
+      
+Q5. What is  CSRF Protection in Laravel?    
+      CSRF attacks are the unauthorized activities which the authenticated users of the system perform. 
+      Laravel provides protection with the CSRF attacks by generating a CSRF token. 
+      CSRF Token is used to verify that the requests are made by an authenticated user.
+      This CSRF token is generated automatically for each user. 
+      

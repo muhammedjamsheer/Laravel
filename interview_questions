@@ -1,0 +1,9 @@
+Q1. What is Laravel?
+    Laravel is a free open source "PHP framework" based on the MVC design pattern.
+    
+    View is a user interface. View display data infront of the user
+    Controllers act as an interface between Model and View components
+    
+Q2. What is PHP artisan ?
+    PHP artisan is the command line interface/tool included with Laravel. 
+    It provides a number of helpful commands that can help you while you build your application easily.    

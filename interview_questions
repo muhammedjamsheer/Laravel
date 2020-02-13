@@ -25,16 +25,24 @@ Q5. What is  CSRF Protection in Laravel?
       CSRF Token is used to verify that the requests are made by an authenticated user.
       This CSRF token is generated automatically for each user. 
       
-Q6. What is Laravel Migration?       
-      Laravel migration is a way that allows you to create a table in your database, 
-      without actually going to the database manager 
-      The up() method is run when the migration is executed to apply changes to the database.
-
 Q7.List benefits of using Laravel over other PHP frameworks?
       Artisan - A Command-Line Interface
       Migrations & Seeding
       Blade Template Engine
       Middleware 
       Eloquent ORM 
-      Routing       
+      Routing      
+
+Q6. What is Laravel Migration?       
+    Laravel migration is a way that allows you to create a table in your database, 
+    without actually going to the database manager 
+    A migration class contains two methods: up and down.
+    The up method is used to add new tables, columns, or indexes to your database,
+    while the down method should reverse the operations performed by the up method.
+    
+    To rollback the latest migration operation, you may use the rollback command
+    The migrate:reset command will roll back all of your application's migrations:
+    The migrate:fresh command will drop all tables from the database
+    
+    to create a table  --->  php artisan make:migration create_users_table
       

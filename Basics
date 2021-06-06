@@ -31,7 +31,10 @@ Get url
     last_part = parts[parts.length-2];
     mark_id = parts[parts.length-1];
     
-    
+ crud examples
+...........................
+https://www.positronx.io/php-laravel-crud-operations-mysql-tutorial/
+https://www.twilio.com/blog/building-and-consuming-a-restful-api-in-laravel-php
 Laravel eloquent
 ............................
 Retrieving Results

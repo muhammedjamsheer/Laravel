@@ -6,15 +6,13 @@ laravel installation
 	php artisan serve
 	php artisan key:generate
 
-create table
-.........................
-	php artisan make:migration create_users_table
-	php artisan migrate
 
 create controller & model
 ..........................
+        php artisan make:model User --migration
+	php artisan migrate
 	php artisan make:controller userController 
-	php artisan make:model User
+	
   
  env file
 .........................
